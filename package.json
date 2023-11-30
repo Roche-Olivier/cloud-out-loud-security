@@ -1,0 +1,25 @@
+{
+  "name": "cloud-out-loud-security",
+  "version": "1.0.5",
+  "description": "JWT and passport auth for node applications.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "security",
+    "jwt",
+    "passport",
+    "passport-active-directory"
+  ],
+  "author": "Roche OLivier",
+  "license": "MIT",
+  "dependencies": {
+    "path": "^0.12.7",
+    "jsonwebtoken": "^9.0.2",
+    "express-session": "^1.17.3",
+    "passport": "^0.7.0",
+    "passport-activedirectory": "^1.4.0"
+  }
+}
