@@ -4,7 +4,7 @@ const passport = require('passport')
 const ActiveDirectoryStrategy = require('passport-activedirectory')
 
 exports._jwt = {
-    init_express_session: function(app) {
+    init_express_session: function (app) {
         var express_session = require('express-session')
         var is_secure = false
         if (process.env.APP_ENV === "DEVELOPMENT" || process.env.APP_ENV === "TEST" || process.env.APP_ENV === "PREPROD" || process.env.APP_ENV === "PRODUCTION") {
@@ -24,7 +24,7 @@ exports._jwt = {
             }
         }));
     },
-    authorize: function(req, res, next) {
+    authorize: function (req, res, next) {
 
         var token = '';
         //check headers
@@ -79,8 +79,8 @@ exports._jwt = {
         }
 
     },
-    sign:function(payload,secret,options){
-        return jwt.sign(payload,secret,options)
+    sign: function (payload, secret, options) {
+        return jwt.sign(payload, secret, options)
     }
 }
 
@@ -135,4 +135,7 @@ exports._ad = {
 
 
     },
+    authenticate: function (strategy, options) {
+        return passport.authenticate(strategy, options)
+    }
 }
