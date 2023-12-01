@@ -80,7 +80,7 @@ exports._jwt = {
 
     },
     sign:function(payload,secret,options){
-        jwt.sign(payload,secret,options)
+        return jwt.sign(payload,secret,options)
     }
 }
 
