@@ -139,3 +139,140 @@ exports._ad = {
         return passport.authenticate(strategy, options)
     }
 }
+
+exports.html_validators = {
+    auth_wrapper: function(req, res, callback) {
+        var token = req.headers["Authorization"] || req.headers["authorization"];
+        if (token) {
+            if (token === 'Basic dXNlcm5hbWU6cGFzc3dvcmQ=') {
+                callback("Failed to authenticate. username and password not allowed.", true, 403);
+            } else {
+                var toten_list = process.env.SECURITY_BASIC_AUTH_INC.split(",");
+                // console.log(process.env.SECURITY_BASIC_AUTH_INC);
+                // console.log(toten_list);
+                if (toten_list.length > 0) {
+                    var found_token = false;
+                    toten_list.forEach((element) => {
+                        if (token === element) {
+                            if (element === 'Basic dXNlcm5hbWU6cGFzc3dvcmQ=') {
+                                found_token = false;
+                            } else {
+                                found_token = true;
+                            }
+                        }
+                    });
+                    if (found_token === true) {
+                        callback("all good", false, 200);
+                    } else {
+                        callback("Failed to authenticate.", true, 403);
+                    }
+                } else {
+                    callback("No authentication provided.", true, 403);
+                }
+            }
+        } else {
+            callback("No authentication provided.", true, 403);
+        }
+    },
+    auth_wrapper_async: async function(req, res) {
+        var response_data = {
+            jsonResult: "",
+            haserror: "",
+            code: "",
+        }
+        var token = req.headers["Authorization"] || req.headers["authorization"];
+        if (token) {
+            if (token === 'Basic dXNlcm5hbWU6cGFzc3dvcmQ=') {
+                response_data.jsonResult = "Failed to authenticate. username and password not allowed."
+                response_data.haserror = true
+                response_data.code = 403
+                return response_data
+            } else {
+                var toten_list = process.env.SECURITY_BASIC_AUTH_INC.split(",");
+                // console.log(process.env.SECURITY_BASIC_AUTH_INC);
+                // console.log(toten_list);
+                if (toten_list.length > 0) {
+                    var found_token = false;
+                    toten_list.forEach((element) => {
+                        if (token === element) {
+                            if (element === 'Basic dXNlcm5hbWU6cGFzc3dvcmQ=') {
+                                found_token = false;
+                            } else {
+                                found_token = true;
+                            }
+                        }
+                    });
+                    if (found_token === true) {
+                        response_data.jsonResult = "All good."
+                        response_data.haserror = false
+                        response_data.code = 200
+                        return response_data
+                    } else {
+                        response_data.jsonResult = "Failed to authenticate."
+                        response_data.haserror = true
+                        response_data.code = 403
+                        return response_data
+                    }
+                } else {
+                    response_data.jsonResult = "No authentication provided."
+                    response_data.haserror = true
+                    response_data.code = 403
+                    return response_data
+                }
+            }
+        } else {
+            response_data.jsonResult = "No authentication provided."
+            response_data.haserror = true
+            response_data.code = 403
+            return response_data
+        }
+    },
+}
+
+exports.html_wrappers = {
+    result_wrapper: function(res, jsonResult, haserror, code) {
+        if (haserror) {
+            res.status(code).type('application/json').json({
+                success: false,
+                httpStatusCode: code,
+                error: {
+                    message: jsonResult
+                }
+            });
+        } else {
+            res.status(code).type('application/json').json({
+                success: true,
+                httpStatusCode: code,
+                data: jsonResult
+            });
+        }
+    },
+    result_wrapper_xml: function(res, jsonResult, haserror, code) {
+        if (!haserror) {
+            res.status(code).type('text/xml').send(jsonResult);
+        } else {
+            res.status(code).type('application/json').json({
+                success: true,
+                httpStatusCode: code,
+                data: jsonResult
+            });
+        }
+    },
+    result_wrapper_async: async function(res, jsonResult, haserror, code) {
+        if (haserror) {
+            res.status(code).type('application/json').json({
+                success: false,
+                httpStatusCode: code,
+                error: {
+                    message: jsonResult
+                }
+            });
+        } else {
+            res.status(code).type('application/json').json({
+                success: true,
+                httpStatusCode: code,
+                data: jsonResult
+            });
+        }
+    }
+}
