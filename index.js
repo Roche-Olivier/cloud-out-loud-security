@@ -33,7 +33,7 @@ exports._jwt = {
             token = authHeader.split(' ')[1];
             jwt.verify(token, process.env.JWT_COOKIE_SECRET, (err, user) => {
                 if (err) {
-                    res.sendFile(path.join(__dirname, '../', '/content/pages/login.html'));
+                    res.sendFile(path.join(__dirname, '../../', '/content/pages/login.html'));
                 }
                 req.user = user;
                 next();
@@ -59,19 +59,22 @@ exports._jwt = {
                     if (found) {
                         jwt.verify(token, process.env.JWT_COOKIE_SECRET, (err, user) => {
                             if (err) {
+                                console.log("Error on verify token." + err)
                                 res.clearCookie(process.env.JWT_COOKIE_NAME);
-                                res.sendFile(path.join(__dirname, '../', '/content/pages/login.html'));
+                                res.sendFile(path.join(__dirname, '../../', '/content/pages/login.html'));
                             } else {
                                 req.user = user;
                                 next();
                             }
                         });
                     } else {
-                        res.sendFile(path.join(__dirname, '../', '/content/pages/login.html'));
+                        console.log("Token not found")
+                        res.sendFile(path.join(__dirname, '../../', '/content/pages/login.html'));
                     }
                 }
             } else {
-                res.sendFile(path.join(__dirname, '../', '/content/pages/login.html'));
+                console.log("No cookies")
+                res.sendFile(path.join(__dirname, '../../', '/content/pages/login.html'));
             }
         }
 
