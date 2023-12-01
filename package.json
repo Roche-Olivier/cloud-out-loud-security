@@ -1,6 +1,6 @@
 {
   "name": "cloud-out-loud-security",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "JWT and passport auth for node applications.",
   "main": "index.js",
   "scripts": {
